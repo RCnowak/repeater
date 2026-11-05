@@ -1,0 +1,50 @@
+.backdrop {
+  position: fixed;
+  z-index: 50;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(28, 31, 27, 0.55);
+  backdrop-filter: blur(5px);
+}
+
+.dialog {
+  width: 100%;
+  max-width: 440px;
+  padding: 20px;
+  border-radius: 25px;
+  background: var(--background);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+
+  header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  header span { color: var(--accent); font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+  header h2 { margin-top: 3px; font-size: 20px; }
+  header button { display: grid; width: 36px; height: 36px; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: var(--surface); cursor: pointer; }
+}
+
+.canvasWrap {
+  position: relative;
+  width: min(100%, 300px);
+  margin: 0 auto;
+  border: 1px solid #d9d8ce;
+  border-radius: 18px;
+  background: #fffefa;
+
+  canvas { position: relative; z-index: 2; display: block; width: 100%; height: auto; border-radius: inherit; cursor: crosshair; touch-action: none; }
+  &__horizontal, &__vertical { position: absolute; z-index: 1; pointer-events: none; }
+  &__horizontal { top: 50%; right: 12px; left: 12px; border-top: 1px dashed #e4e2d9; }
+  &__vertical { top: 12px; bottom: 12px; left: 50%; border-left: 1px dashed #e4e2d9; }
+}
+
+.status { display: flex; align-items: center; justify-content: center; gap: 5px; min-height: 30px; margin: 8px 0 4px; color: var(--muted); font-size: 9px; text-align: center; }
+.tools { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.tools button { display: flex; align-items: center; justify-content: center; gap: 5px; padding: 8px; border: 0; color: var(--muted); background: transparent; cursor: pointer; font-size: 10px; }
+.tools button:disabled { opacity: 0.35; }
+.matches { display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px; margin-bottom: 12px; }
+.matches button { display: grid; aspect-ratio: 1; place-items: center; border: 1px solid #decfc5; border-radius: 9px; color: var(--accent); background: var(--accent-soft); cursor: pointer; font-size: 22px; }
+
+@media (min-width: 500px) {
+  .backdrop { align-items: center; }
+}

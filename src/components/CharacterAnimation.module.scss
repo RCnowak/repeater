@@ -1,0 +1,38 @@
+.animation {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface);
+
+  &__characters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 9px;
+  }
+
+  &__replay {
+    width: fit-content;
+    min-height: 36px;
+    margin: 10px auto 0;
+    padding: 8px 13px;
+    font-size: 10px;
+  }
+
+  &__error {
+    margin-top: 10px;
+    color: var(--accent);
+    font-size: 10px;
+    line-height: 1.5;
+    text-align: center;
+  }
+}
+
+.character {
+  overflow: hidden;
+  width: 96px;
+  height: 96px;
+  border: 1px solid #ebe9e1;
+  border-radius: 14px;
+  background: #fffefa;
+}

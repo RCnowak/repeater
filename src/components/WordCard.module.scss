@@ -1,0 +1,79 @@
+.card {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 19px;
+  background: var(--surface);
+
+  &__main {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 15px;
+  }
+
+  &__hanzi {
+    display: grid;
+    flex: 0 0 auto;
+    min-width: 58px;
+    height: 62px;
+    padding: 0 8px;
+    place-items: center;
+    border-radius: 15px;
+    color: #9d493a;
+    background: var(--accent-soft);
+    font-size: 31px;
+    line-height: 1.15;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  &__content {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+
+    > strong { color: #5f7565; font-size: 12px; font-weight: 700; }
+    > span:not(.card__tags) { margin-top: 3px; overflow: hidden; font-size: 13px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+  }
+
+  &__tags {
+    display: flex;
+    gap: 5px;
+    margin-top: 7px;
+
+    i {
+      padding: 3px 6px;
+      border-radius: 6px;
+      color: var(--muted);
+      background: #f1f0eb;
+      font-size: 8px;
+      font-style: normal;
+      font-weight: 600;
+    }
+  }
+
+  &__arrow { flex: 0 0 auto; color: #b0b1aa; }
+
+  &__keys {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 15px;
+    border-top: 1px solid #f0eee8;
+    color: var(--muted);
+    background: #fcfbf8;
+    font-size: 9px;
+
+    a {
+      display: grid;
+      width: 25px;
+      height: 25px;
+      place-items: center;
+      border-radius: 7px;
+      color: #6d786b;
+      background: var(--jade-soft);
+      font-size: 15px;
+    }
+  }
+}

@@ -1,0 +1,87 @@
+.searchRow {
+  display: flex;
+  gap: 9px;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 9px;
+  height: 50px;
+  padding: 0 13px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  color: #96988f;
+  background: var(--surface);
+
+  input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    color: var(--ink);
+    background: transparent;
+    font-size: 12px;
+
+    &::placeholder { color: #a6a79f; }
+  }
+
+  button { display: grid; padding: 3px; place-items: center; border: 0; color: var(--muted); background: transparent; cursor: pointer; }
+}
+
+.handwritingButton {
+  display: grid;
+  flex: 0 0 50px;
+  height: 50px;
+  place-items: center;
+  border: 0;
+  border-radius: 15px;
+  color: #fffaf5;
+  background: var(--accent);
+  cursor: pointer;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 16px 1px 14px;
+  color: var(--muted);
+  font-size: 10px;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 10px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--surface);
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  button span { display: grid; width: 16px; height: 16px; place-items: center; border-radius: 50%; color: white; background: var(--accent); font-size: 8px; }
+  &__filter--active { border-color: #dec0b6 !important; color: var(--accent); background: var(--accent-soft) !important; }
+}
+
+.filters {
+  margin: -2px 0 15px;
+  padding: 15px;
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  background: var(--surface);
+
+  &__selects { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  label { color: var(--muted); font-size: 9px; font-weight: 600; }
+  select { display: block; width: 100%; height: 38px; margin-top: 6px; padding: 0 8px; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); background: #faf9f5; font-size: 10px; }
+  &__label { display: block; margin: 14px 0 8px; color: var(--muted); font-size: 9px; font-weight: 600; }
+  &__tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  &__tags button { padding: 6px 9px; border: 1px solid var(--line); border-radius: 9px; background: transparent; cursor: pointer; font-size: 9px; }
+  &__tag--selected { border-color: #b8c9b9 !important; color: #496551; background: var(--jade-soft); }
+  &__reset { margin-top: 12px; padding: 0; border: 0; color: var(--accent); background: transparent; cursor: pointer; font-size: 10px; }
+}
+
+.list { display: flex; flex-direction: column; gap: 10px; }

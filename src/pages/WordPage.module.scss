@@ -1,0 +1,54 @@
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 17px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.hero {
+  padding: 26px 20px;
+  border-radius: 25px;
+  color: #fffaf5;
+  background: #353d35;
+  text-align: center;
+
+  &__hanzi { font-size: 68px; line-height: 1.2; letter-spacing: 0.06em; }
+  &__pinyin { display: block; margin-top: 11px; color: #d5b69f; font-size: 17px; }
+  h1 { margin-top: 7px; font-size: 20px; font-weight: 600; }
+  &__badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 16px; }
+  &__badges span { padding: 5px 9px; border-radius: 8px; color: #d6dbd2; background: rgba(255,255,255,0.08); font-size: 9px; }
+}
+
+.train { margin-top: 12px; }
+.section { margin-top: 24px; }
+.section > h2 { display: flex; align-items: center; gap: 7px; margin-bottom: 11px; font-size: 16px; }
+
+.details {
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  background: var(--surface);
+
+  > div { display: grid; grid-template-columns: 40% 60%; padding: 12px 14px; }
+  > div + div { border-top: 1px solid var(--line); }
+  dt { color: var(--muted); font-size: 11px; }
+  dd { margin: 0; font-size: 12px; font-weight: 600; }
+}
+
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.keys { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.keys > a { display: flex; align-items: center; gap: 9px; min-width: 0; padding: 11px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+.keys > a > span { display: grid; flex: 0 0 34px; height: 37px; place-items: center; border-radius: 10px; color: #9d493a; background: var(--accent-soft); font-size: 23px; }
+.keys strong, .keys small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.keys strong { color: var(--jade); font-size: 10px; }
+.keys small { margin-top: 3px; color: var(--muted); font-size: 8px; }
+
+.values { margin: 0; padding: 14px 14px 14px 30px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+.values li { padding: 5px 0; color: #5f625b; font-size: 11px; line-height: 1.55; }
+.related { margin-top: 28px; }
+.related > p { margin: -5px 0 13px; color: var(--muted); font-size: 10px; }
+.related__list { display: flex; flex-direction: column; gap: 9px; }

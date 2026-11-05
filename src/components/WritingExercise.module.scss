@@ -1,0 +1,10 @@
+.writing {
+  text-align: center;
+
+  &__meta { display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 8px; color: var(--muted); font-size: 11px; }
+  &__meta strong { margin-left: 4px; color: var(--accent); font-size: 20px; }
+  &__meta small { margin-left: 8px; font-size: 9px; }
+  &__target { overflow: hidden; width: 280px; max-width: 100%; margin: 0 auto; border: 1px solid var(--line); border-radius: 20px; background: #fffefa; touch-action: none; }
+  > p { margin: 11px auto 15px; color: var(--muted); font-size: 10px; line-height: 1.55; }
+  &__error { color: var(--accent) !important; }
+}

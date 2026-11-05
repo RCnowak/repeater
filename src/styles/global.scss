@@ -1,0 +1,169 @@
+@font-face {
+  font-family: 'Repeater Chinese';
+  src: url('../assets/fonts/noto-sans-sc.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+:root {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Repeater Chinese', sans-serif;
+  color: #292b27;
+  background: #e9e8e1;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --background: #f7f6f0;
+  --surface: #ffffff;
+  --ink: #292b27;
+  --muted: #81847c;
+  --line: #e7e5dc;
+  --accent: #b75542;
+  --accent-soft: #f5e5df;
+  --jade: #5f7f6c;
+  --jade-soft: #e5eee6;
+  --gold-soft: #f3ecd9;
+  --chinese-font: 'Repeater Chinese', 'Noto Sans CJK SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { background: #e9e8e1; }
+body { margin: 0; min-width: 320px; min-height: 100vh; }
+button, input, textarea, select { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button { color: inherit; }
+a { color: inherit; text-decoration: none; }
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid rgba(183, 85, 66, 0.25);
+  outline-offset: 3px;
+}
+
+h1, h2, h3, p { margin: 0; }
+#root { min-height: 100vh; }
+.page { padding: 20px 20px 116px; }
+
+.page-heading {
+  margin-bottom: 22px;
+
+  &__eyebrow {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  h1 { font-size: 29px; font-weight: 750; letter-spacing: -0.045em; line-height: 1.15; }
+  p { margin-top: 8px; color: var(--muted); font-size: 13px; line-height: 1.55; }
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+
+  h2 { font-size: 18px; font-weight: 750; letter-spacing: -0.025em; }
+  span, a { color: var(--muted); font-size: 11px; }
+}
+
+.primary-button,
+.secondary-button,
+.danger-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  min-height: 50px;
+  padding: 13px 18px;
+  border: 0;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  transition: transform 160ms ease, background 160ms ease;
+}
+
+.primary-button { color: #fffaf5; background: var(--accent); }
+.primary-button:hover { background: #a64c3a; }
+.secondary-button { border: 1px solid var(--line); background: var(--surface); }
+.danger-button { color: #a74d3c; background: var(--accent-soft); }
+.primary-button:active, .secondary-button:active, .danger-button:active { transform: scale(0.98); }
+.primary-button:disabled, .secondary-button:disabled { cursor: not-allowed; opacity: 0.45; }
+
+.chinese { font-family: var(--chinese-font); }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 9px;
+  border-radius: 8px;
+  color: #687066;
+  background: #efeee8;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.empty-state {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 45px 20px;
+  color: var(--muted);
+  text-align: center;
+
+  h2 { margin: 13px 0 6px; color: var(--ink); font-size: 18px; }
+  p { max-width: 280px; font-size: 12px; line-height: 1.6; }
+}
+
+.app-state {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 30px;
+  background: var(--background);
+  text-align: center;
+
+  &__logo {
+    display: grid;
+    width: 70px;
+    height: 70px;
+    margin-bottom: 20px;
+    place-items: center;
+    border-radius: 22px;
+    color: white;
+    background: var(--accent);
+    font-family: var(--chinese-font);
+    font-size: 40px;
+  }
+
+  h1 { font-size: 22px; }
+  p { margin-top: 8px; color: var(--muted); font-size: 13px; }
+}
+
+@media (min-width: 600px) {
+  #root {
+    width: 480px;
+    margin: 0 auto;
+    background: var(--background);
+    box-shadow: 0 0 50px rgba(42, 42, 35, 0.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
