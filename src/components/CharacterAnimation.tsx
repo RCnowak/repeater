@@ -1,6 +1,7 @@
 import HanziWriter from 'hanzi-writer';
 import { RotateCcw } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { getHanziCharacters } from '../utils/hanzi';
 import { loadHanziCharacter } from '../utils/hanziData';
 import styles from './CharacterAnimation.module.scss';
 
@@ -12,7 +13,7 @@ export default function CharacterAnimation({ hanzi }: CharacterAnimationProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const writersRef = useRef<HanziWriter[]>([]);
   const [error, setError] = useState(false);
-  const characters = Array.from(hanzi);
+  const characters = getHanziCharacters(hanzi);
   const animationRunRef = useRef(0);
 
   const playFrom = (index: number, run: number) => {

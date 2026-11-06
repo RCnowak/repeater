@@ -52,9 +52,9 @@ export function pinyinSearchKey(value: string) {
     .map((character) => plainVowels[character] || character)
     .join('')
     .replace(/ü/g, 'v')
-    .replace(/[1-5\s'-]/g, '');
+    .replace(/[1-5\s'.…-]/g, '');
 }
 
 export function isPinyinCorrect(answer: string, expected: string) {
-  return pinyinSearchKey(answer) === pinyinSearchKey(expected) && normalizePinyin(answer).replace(/[\s']/g, '') === normalizePinyin(expected).replace(/[\s']/g, '');
+  return pinyinSearchKey(answer) === pinyinSearchKey(expected) && normalizePinyin(answer).replace(/[\s'.…]/g, '') === normalizePinyin(expected).replace(/[\s'.…]/g, '');
 }

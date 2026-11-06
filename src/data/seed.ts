@@ -1,4 +1,4 @@
-import type { Key, Module, Tag, WordContent, WordUserData } from '../types';
+import type { Module, Tag, WordUserData } from '../types';
 import { examples, words } from './words'
 
 export const seedModules: Module[] = [];
@@ -23,6 +23,18 @@ export const seedTags: Tag[] = [
   { id: 'directions', name: 'Направления' },
   { id: 'pronouns', name: 'Местоимения' },
   { id: 'weather', name: 'Погода' },
+  { id: 'family', name: 'Семья' },
+  { id: 'questions', name: 'Вопросы' },
+  { id: 'communication', name: 'Общение' },
+  { id: 'work', name: 'Работа и профессии' },
+  { id: 'shopping', name: 'Покупки и деньги' },
+  { id: 'names', name: 'Имена' },
+  { id: 'health', name: 'Здоровье' },
+  { id: 'home', name: 'Дом и вещи' },
+  { id: 'emotions', name: 'Эмоции' },
+  { id: 'transport', name: 'Транспорт' },
+  { id: 'technology', name: 'Техника' },
+  { id: 'clothes', name: 'Одежда' },
 ];
 
 export { keys as seedKeys} from './keys';

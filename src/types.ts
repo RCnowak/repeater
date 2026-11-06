@@ -6,17 +6,21 @@ export interface SrsState {
   wrongCount: number;
 }
 
-export interface WordContent {
-  id: string;
+export interface BaseWordContent {
+  id?: string;
   hanzi: string;
   pinyin: string;
   translation: string;
   moduleId?: string;
   hskLevel?: number;
   tags: string[];
-  keyIds: string[];
+  keyIds?: string[];
   measureWord?: string;
+}
+export interface WordContent extends BaseWordContent {
+  id: string;
   createdAt: string;
+  keyIds: string[];
 }
 
 export interface WordUserData {

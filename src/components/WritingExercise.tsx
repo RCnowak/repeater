@@ -2,6 +2,7 @@ import HanziWriter from 'hanzi-writer';
 import { PenLine } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import type { Word } from '../types';
+import { getHanziCharacters } from '../utils/hanzi';
 import { loadHanziCharacter } from '../utils/hanziData';
 import styles from './WritingExercise.module.scss';
 
@@ -17,7 +18,7 @@ export default function WritingExercise({ word, onFinish }: WritingExerciseProps
   const mistakesRef = useRef(0);
   const [characterIndex, setCharacterIndex] = useState(0);
   const [error, setError] = useState(false);
-  const characters = Array.from(word.hanzi);
+  const characters = getHanziCharacters(word.hanzi);
   onFinishRef.current = onFinish;
 
   useEffect(() => {
@@ -67,6 +68,7 @@ export default function WritingExercise({ word, onFinish }: WritingExerciseProps
   return (
     <div className={styles.writing}>
       <div className={styles.writing__meta}><PenLine size={15} /><span>Напиши иероглиф по памяти</span><small>{characterIndex + 1} / {characters.length}</small></div>
+      {characters.length > 1 && <div className={styles.writing__completed} aria-live="polite"><span>Готово:</span>{characterIndex === 0 ? <small>—</small> : characters.slice(0, characterIndex).map((character) => <b className="chinese" key={character}>{character}</b>)}</div>}
       <div ref={targetRef} className={styles.writing__target} />
       {error && <p className={styles.writing__error}>Нет данных начертания для этого иероглифа. Можно пропустить упражнение.</p>}
       <p>Пиши черты в правильном порядке. После двух ошибок появится подсказка.</p>

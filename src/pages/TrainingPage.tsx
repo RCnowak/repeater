@@ -6,6 +6,7 @@ import WritingExercise from '../components/WritingExercise';
 import { recordReview } from '../db/database';
 import useLocalStorage from '../hooks/useLocalStorage';
 import type { ExerciseType, Settings, Word } from '../types';
+import { hasHanziGap, normalizeHanziAnswer } from '../utils/hanzi';
 import { isPinyinCorrect } from '../utils/pinyin';
 import { defaultSettings, sanitizeSettings } from '../utils/settings';
 import styles from './TrainingPage.module.scss';
@@ -72,7 +73,7 @@ export default function TrainingPage() {
     if (!sessionWords) return;
     const word = sessionWords[index];
     let correct = false;
-    if (exercise === 'ru-zh') correct = hanziAnswer.trim() === word.hanzi && isPinyinCorrect(pinyinAnswer, word.pinyin);
+    if (exercise === 'ru-zh') correct = normalizeHanziAnswer(hanziAnswer) === normalizeHanziAnswer(word.hanzi) && isPinyinCorrect(pinyinAnswer, word.pinyin);
     if (exercise === 'zh-pinyin') correct = isPinyinCorrect(pinyinAnswer, word.pinyin);
     if (exercise === 'measure') correct = hanziAnswer.trim() === word.measureWord;
     void finishAnswer(correct);
@@ -151,6 +152,7 @@ export default function TrainingPage() {
         {exercise === 'writing' && !feedback && <WritingExercise key={`${word.id}-${index}`} word={word} onFinish={(correct) => void finishAnswer(correct)} />}
         {exercise !== 'writing' && (
           <div className={styles.answers}>
+            {hasHanziGap(word.hanzi) && <small className={styles.answers__hint}>Вводи только иероглифы — точки и многоточие не нужны.</small>}
             {(exercise === 'ru-zh' || exercise === 'measure') && <input className="chinese" value={hanziAnswer} onChange={(event) => setHanziAnswer(event.target.value)} placeholder={exercise === 'measure' ? '个, 本, 只…' : 'Иероглифы'} disabled={Boolean(feedback)} autoComplete="off" />}
             {(exercise === 'ru-zh' || exercise === 'zh-pinyin') && <input value={pinyinAnswer} onChange={(event) => setPinyinAnswer(event.target.value)} placeholder="ni3 hao3 или nǐ hǎo" disabled={Boolean(feedback)} autoComplete="off" />}
             {!feedback && <button className="primary-button" type="button" onClick={checkAnswer} disabled={exercise === 'ru-zh' ? !hanziAnswer || !pinyinAnswer : exercise === 'zh-pinyin' ? !pinyinAnswer : !hanziAnswer}>Проверить <ArrowRight size={17} /></button>}
