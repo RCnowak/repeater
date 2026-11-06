@@ -1,5 +1,6 @@
 import { ArrowLeft } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
+import CharacterAnimation from '../components/CharacterAnimation';
 import { useDictionary } from '../components/DictionaryProvider';
 import WordCard from '../components/WordCard';
 import styles from './KeyPage.module.scss';
@@ -16,13 +17,19 @@ export default function KeyPage() {
     return child ? [child] : [];
   });
   const relatedWords = words.filter((word) => word.keyIds.includes(key.id));
+  const symbols = [key.symbol, ...(key.variants ?? [])];
 
   return (
     <div className="page">
       <Link to="/keys" className={styles.back}><ArrowLeft size={17} /> Все ключи</Link>
       <section className={styles.hero}>
         <span className={`${styles.hero__symbol} chinese`}>{key.symbol}</span>
-        <div><span>{key.pinyin || 'Без пиньиня'}</span><h1>{key.translation || 'Ключ'}</h1></div>
+        <div><span>{key.pinyin || 'Без пиньиня'}</span><h1>{key.translation || 'Ключ'}</h1>{key.variants?.length ? <div className={`${styles.hero__variants} chinese`}>Варианты: {key.variants.join(' · ')}</div> : null}</div>
+      </section>
+
+      <section className={styles.section}>
+        <h2>Начертание{symbols.length > 1 ? ' вариантов' : ''}</h2>
+        <CharacterAnimation key={key.id} hanzi={symbols.join('')} />
       </section>
 
       <section className={styles.section}>

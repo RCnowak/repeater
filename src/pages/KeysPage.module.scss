@@ -28,6 +28,9 @@
     font-size: 35px;
   }
 
+  &__variants { display: flex; align-items: center; justify-content: center; gap: 5px; min-height: 24px; margin: -4px 0 5px; color: var(--muted); font-family: inherit; font-size: 8px; }
+  &__variants b { display: grid; min-width: 24px; height: 24px; place-items: center; border-radius: 7px; color: #657465; background: var(--jade-soft); font-family: var(--chinese-font); font-size: 16px; font-weight: 400; }
+
   strong { color: var(--jade); font-size: 11px; }
   p { overflow: hidden; width: 100%; margin-top: 4px; color: var(--muted); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
   > span { display: flex; align-items: center; gap: 2px; margin-top: 11px; color: #9b9d95; font-size: 8px; }

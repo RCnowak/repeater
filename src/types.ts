@@ -37,6 +37,7 @@ export interface Word extends WordContent {
 export interface Key {
   id: string;
   symbol: string;
+  variants?: string[];
   pinyin?: string;
   translation?: string;
   childKeyIds: string[];
@@ -55,7 +56,7 @@ export interface Tag {
   name: string;
 }
 
-export type ExerciseType = 'ru-zh' | 'zh-pinyin' | 'pinyin-zh' | 'writing' | 'measure';
+export type ExerciseType = 'ru-zh' | 'zh-pinyin' | 'writing' | 'measure';
 export type TrainingOrder = 'created' | 'wrong';
 
 export interface Settings {

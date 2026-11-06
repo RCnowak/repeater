@@ -19,6 +19,7 @@ export default function KeysPage() {
           return (
             <Link to={`/keys/${key.id}`} key={key.id} className={styles.key}>
               <div className={`${styles.key__symbol} chinese`}>{key.symbol}</div>
+              {key.variants?.length ? <div className={`${styles.key__variants} chinese`}><span>также:</span>{key.variants.map((variant) => <b key={variant}>{variant}</b>)}</div> : null}
               <strong>{key.pinyin || '—'}</strong>
               <p>{key.translation || 'Значение не указано'}</p>
               <span>{wordCount} слов <ChevronRight size={13} /></span>

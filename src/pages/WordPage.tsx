@@ -9,7 +9,7 @@ const splitValues = (value?: string) => value?.split(/[,，]/).map((item) => ite
 
 export default function WordPage() {
   const { wordId } = useParams();
-  const { words, keys, tags, modules } = useDictionary();
+  const { words, keys, tags } = useDictionary();
   const word = words.find((item) => item.id === wordId);
 
   if (!word) return <div className="empty-state"><h2>Слово не найдено</h2><Link to="/">Вернуться в словарь</Link></div>;
@@ -29,7 +29,6 @@ export default function WordPage() {
         <h1>{word.translation}</h1>
         <div className={styles.hero__badges}>
           {word.hskLevel && <span>HSK {word.hskLevel}</span>}
-          {word.moduleId && <span>{modules.find((module) => module.id === word.moduleId)?.title}</span>}
         </div>
       </section>
 

@@ -4,9 +4,11 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "pack:hanzi": "node scripts/pack-hanzi-data.mjs",
+    "sync:hanzi": "node scripts/sync-hanzi-data.mjs && npm run pack:hanzi",
+    "dev": "npm run pack:hanzi && vite",
     "typecheck": "tsc --noEmit",
-    "build": "tsc --noEmit && vite build",
+    "build": "npm run pack:hanzi && tsc --noEmit && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

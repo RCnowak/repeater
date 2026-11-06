@@ -9,18 +9,17 @@ import { pinyinSearchKey } from '../utils/pinyin';
 import styles from './DictionaryPage.module.scss';
 
 export default function DictionaryPage() {
-  const { words, keys, tags, modules } = useDictionary();
+  const { words, keys, tags } = useDictionary();
   const [searchParams] = useSearchParams();
   const [query, setQuery] = useState(searchParams.get('q') ?? '');
   const [hskLevel, setHskLevel] = useState('');
-  const [moduleId, setModuleId] = useState('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [handwritingOpen, setHandwritingOpen] = useState(false);
   const debouncedQuery = useDebouncedValue(query);
   const normalizedQuery = debouncedQuery.trim().toLowerCase();
   const pinyinQuery = pinyinSearchKey(debouncedQuery);
-  const activeFilters = Number(Boolean(hskLevel)) + Number(Boolean(moduleId)) + selectedTags.length;
+  const activeFilters = Number(Boolean(hskLevel)) + selectedTags.length;
 
   const filteredWords = useMemo(() => words.filter((word) => {
     const matchesQuery = !normalizedQuery
@@ -28,14 +27,12 @@ export default function DictionaryPage() {
       || word.translation.toLowerCase().includes(normalizedQuery)
       || (pinyinQuery && pinyinSearchKey(word.pinyin).includes(pinyinQuery));
     const matchesHsk = !hskLevel || word.hskLevel === Number(hskLevel);
-    const matchesModule = !moduleId || word.moduleId === moduleId;
     const matchesTags = selectedTags.every((tagId) => word.tags.includes(tagId));
-    return matchesQuery && matchesHsk && matchesModule && matchesTags;
-  }), [words, normalizedQuery, pinyinQuery, hskLevel, moduleId, selectedTags]);
+    return matchesQuery && matchesHsk && matchesTags;
+  }), [words, normalizedQuery, pinyinQuery, hskLevel, selectedTags]);
 
   const resetFilters = () => {
     setHskLevel('');
-    setModuleId('');
     setSelectedTags([]);
   };
 
@@ -67,7 +64,6 @@ export default function DictionaryPage() {
         <section className={styles.filters}>
           <div className={styles.filters__selects}>
             <label>HSK<select value={hskLevel} onChange={(event) => setHskLevel(event.target.value)}><option value="">Любой уровень</option>{[1, 2, 3, 4, 5, 6].map((level) => <option key={level} value={level}>HSK {level}</option>)}</select></label>
-            <label>Модуль<select value={moduleId} onChange={(event) => setModuleId(event.target.value)}><option value="">Все модули</option>{modules.map((module) => <option key={module.id} value={module.id}>{module.title}</option>)}</select></label>
           </div>
           <span className={styles.filters__label}>Теги</span>
           <div className={styles.filters__tags}>

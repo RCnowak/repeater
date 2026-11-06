@@ -1,4 +1,4 @@
-import { BarChart3, BookOpen, Database, Grid2X2, Play } from 'lucide-react';
+import { BarChart3, BookOpen, Database, Grid2X2, Play, Settings } from 'lucide-react';
 import { NavLink, Outlet } from 'react-router-dom';
 import styles from './Layout.module.scss';
 
@@ -7,6 +7,7 @@ const navigation = [
   { to: '/keys', label: 'Ключи', icon: Grid2X2 },
   { to: '/training', label: 'Тренировка', icon: Play, primary: true },
   { to: '/stats', label: 'Статистика', icon: BarChart3 },
+  { to: '/settings', label: 'Настройки', icon: Settings },
 ];
 
 export default function Layout() {

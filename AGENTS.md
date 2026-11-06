@@ -18,13 +18,15 @@
 ## Commands
 
 - `npm install` — install dependencies.
-- `npm run dev` — start Vite.
+- `npm run sync:hanzi` — scan seed words, keys, measure words, and key variants; download only missing HanziWriter source data and rebuild the pack.
+- `npm run pack:hanzi` — pack `data/hanzi/*.json` into one minified `public/data/hanzi-writer.json`.
+- `npm run dev` — pack Hanzi data and start Vite.
 - `npm run typecheck` — run strict TypeScript checks.
-- `npm run build` — typecheck and build the PWA into `dist/`.
+- `npm run build` — pack Hanzi data, typecheck, and build the PWA into `dist/`.
 - `npm run preview` — serve the production build.
 - `VITE_BASE_PATH=/repeater-v2/ npm run build` — build for this repository's GitHub Pages path.
 
-There is no automated test file suite or lint command. Browser smoke checks have covered all five exercise types, search normalization, IndexedDB persistence, handwriting recognition, local HanziWriter data, and offline reload.
+There is no automated test file suite or lint command. Browser smoke checks have covered all four exercise types, search normalization, IndexedDB persistence, handwriting recognition, local HanziWriter data, and offline reload.
 
 ## Data architecture
 
@@ -40,21 +42,24 @@ There is no automated test file suite or lint command. Browser smoke checks have
 
 Hash-based routes:
 
-- `#/` — dictionary, 250ms debounced search, HSK/module/tag filters, handwriting input.
-- `#/words/:wordId` — word details, keys, associations, examples, measure word, related words/parts.
-- `#/keys` and `#/keys/:keyId` — keys, nested keys, related words.
-- `#/training` — settings, five exercise types, SRS-aware sessions, completion state.
+- `#/` — dictionary, 250ms debounced search, HSK/tag filters, handwriting input. Modules remain in the data model but are hidden until their feature is ready.
+- `#/words/:wordId` — word details, keys, associations, examples, measure word, related words/parts, sequential character animations.
+- `#/keys` and `#/keys/:keyId` — keys, optional alternative `variants`, nested keys, related words, animations for every form.
+- `#/training` — settings, four exercise types, SRS-aware sessions, completion state. Writing is blind RU→ZH with no outline hint.
 - `#/stats` — last 7 days, words with errors, consecutive training-day streak, recent answers.
+- `#/settings` — persisted default limit, exercise types, SRS mode, and order. Training is the centered third of five bottom-navigation items.
 
 Pinyin utilities are in `src/utils/pinyin.ts`. Preserve support for diacritics, numbered tones, toneless search, and `v`/`u:` for `ü`.
 
 ## Offline assets
 
 - `public/vendor/hanzilookup.min.js` and `public/data/mmah.json` are the local HanziLookupJS runtime/model.
-- `public/hanzi/<character>.json` contains local HanziWriter data for every character used by seed words and measure words.
-- `src/assets/fonts/noto-sans-sc.ttf` is a small local subset covering the current Chinese UI/content glyphs. Extend this subset and the HanziWriter JSON assets when adding characters.
+- `data/hanzi/<character>.json` files are build-time sources, not public endpoints. They cover seed words, keys, key variants, and measure words.
+- `public/data/hanzi-writer.json` is the single minified HanziWriter pack. It is precached with the shell so every character works offline after service worker installation; there are no per-character HTTP requests.
+- `src/utils/hanziData.ts` deduplicates pack reads and serves character data to both animation and quiz components.
+- `src/assets/fonts/noto-sans-sc.ttf` is a small local subset covering the current Chinese UI/content glyphs. Extend this subset when adding characters.
 - Keep third-party license files with their assets.
-- Workbox precaches JS, CSS, HTML, SVG, PNG, JSON, WOFF2, and TTF assets.
+- Workbox precaches JS, CSS, HTML, SVG, PNG, JSON, WOFF2, and TTF assets; the 20MB asset limit accommodates future growth of the Hanzi pack.
 
 ## GitHub Pages
 

@@ -1,8 +1,8 @@
 import HanziWriter from 'hanzi-writer';
 import { PenLine } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import type { CharacterJson } from 'hanzi-writer';
 import type { Word } from '../types';
+import { loadHanziCharacter } from '../utils/hanziData';
 import styles from './WritingExercise.module.scss';
 
 interface WritingExerciseProps {
@@ -35,18 +35,14 @@ export default function WritingExercise({ word, onFinish }: WritingExerciseProps
       height: 280,
       padding: 22,
       showCharacter: false,
-      showOutline: true,
+      showOutline: false,
       strokeColor: '#353d35',
       outlineColor: '#deddd4',
       drawingColor: '#b75542',
       highlightColor: '#d8a68f',
       drawingWidth: 7,
       showHintAfterMisses: 2,
-      charDataLoader: async (char) => {
-        const response = await fetch(`${import.meta.env.BASE_URL}hanzi/${encodeURIComponent(char)}.json`);
-        if (!response.ok) throw new Error(`Character data not found: ${char}`);
-        return await response.json() as CharacterJson;
-      },
+      charDataLoader: loadHanziCharacter,
       onLoadCharDataError: () => setError(true),
     });
     writerRef.current = writer;
@@ -70,7 +66,7 @@ export default function WritingExercise({ word, onFinish }: WritingExerciseProps
 
   return (
     <div className={styles.writing}>
-      <div className={styles.writing__meta}><PenLine size={15} /><span>Напиши: <strong className="chinese">{characters[characterIndex]}</strong></span><small>{characterIndex + 1} / {characters.length}</small></div>
+      <div className={styles.writing__meta}><PenLine size={15} /><span>Напиши иероглиф по памяти</span><small>{characterIndex + 1} / {characters.length}</small></div>
       <div ref={targetRef} className={styles.writing__target} />
       {error && <p className={styles.writing__error}>Нет данных начертания для этого иероглифа. Можно пропустить упражнение.</p>}
       <p>Пиши черты в правильном порядке. После двух ошибок появится подсказка.</p>

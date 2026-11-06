@@ -7,6 +7,7 @@ import KeysPage from './pages/KeysPage';
 import KeyPage from './pages/KeyPage';
 import TrainingPage from './pages/TrainingPage';
 import StatsPage from './pages/StatsPage';
+import SettingsPage from './pages/SettingsPage';
 
 export default function App() {
   const { loading, error } = useDictionary();
@@ -30,6 +31,7 @@ export default function App() {
         <Route path="keys/:keyId" element={<KeyPage />} />
         <Route path="training" element={<TrainingPage />} />
         <Route path="stats" element={<StatsPage />} />
+        <Route path="settings" element={<SettingsPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

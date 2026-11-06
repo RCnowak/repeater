@@ -7,21 +7,13 @@ import { recordReview } from '../db/database';
 import useLocalStorage from '../hooks/useLocalStorage';
 import type { ExerciseType, Settings, Word } from '../types';
 import { isPinyinCorrect } from '../utils/pinyin';
+import { defaultSettings, sanitizeSettings } from '../utils/settings';
 import styles from './TrainingPage.module.scss';
-
-const defaultSettings: Settings = {
-  limit: 10,
-  exerciseTypes: ['ru-zh', 'zh-pinyin', 'pinyin-zh', 'writing', 'measure'],
-  useSrs: true,
-  moduleIds: [],
-  order: 'created',
-};
 
 const exerciseLabels: { id: ExerciseType; title: string; description: string }[] = [
   { id: 'ru-zh', title: 'Перевод → китайский', description: 'Иероглифы и пиньинь' },
   { id: 'zh-pinyin', title: 'Китайский → пиньинь', description: 'Произношение с тонами' },
-  { id: 'pinyin-zh', title: 'Пиньинь → китайский', description: 'Точное написание' },
-  { id: 'writing', title: 'Начертание', description: 'Порядок черт' },
+  { id: 'writing', title: 'Начертание', description: 'Перевод без подсказки контура' },
   { id: 'measure', title: 'Счётное слово', description: 'Для существительных' },
 ];
 
@@ -35,8 +27,9 @@ function chooseExercise(word: Word, selected: ExerciseType[]) {
 }
 
 export default function TrainingPage() {
-  const { words, modules } = useDictionary();
-  const [settings, setSettings] = useLocalStorage<Settings>('repeater-settings', defaultSettings);
+  const { words } = useDictionary();
+  const [storedSettings, setSettings] = useLocalStorage<Settings>('repeater-settings', defaultSettings);
+  const settings = sanitizeSettings(storedSettings);
   const { register, handleSubmit } = useForm<Settings>({ defaultValues: settings });
   const [sessionWords, setSessionWords] = useState<Word[] | null>(null);
   const [index, setIndex] = useState(0);
@@ -51,7 +44,6 @@ export default function TrainingPage() {
   const startSession = (values: Settings) => {
     const now = new Date();
     const selected = words
-      .filter((word) => !values.moduleIds.length || (word.moduleId && values.moduleIds.includes(word.moduleId)))
       .filter((word) => !values.useSrs || new Date(word.srs.nextReview) <= now)
       .filter((word) => availableExercises(word, values.exerciseTypes).length > 0)
       .sort((first, second) => values.order === 'wrong'
@@ -82,7 +74,6 @@ export default function TrainingPage() {
     let correct = false;
     if (exercise === 'ru-zh') correct = hanziAnswer.trim() === word.hanzi && isPinyinCorrect(pinyinAnswer, word.pinyin);
     if (exercise === 'zh-pinyin') correct = isPinyinCorrect(pinyinAnswer, word.pinyin);
-    if (exercise === 'pinyin-zh') correct = hanziAnswer.trim() === word.hanzi;
     if (exercise === 'measure') correct = hanziAnswer.trim() === word.measureWord;
     void finishAnswer(correct);
   };
@@ -130,10 +121,6 @@ export default function TrainingPage() {
             <label className={styles.switch}><span><strong>Учитывать SRS</strong><small>Только слова, которые пора повторить</small></span><input type="checkbox" {...register('useSrs')} /></label>
           </section>
 
-          <section className={styles.setup__section}>
-            <h2>Модули <small>если ничего не выбрано — все</small></h2>
-            <div className={styles.moduleOptions}>{modules.map((module) => <label key={module.id}><input type="checkbox" value={module.id} {...register('moduleIds')} /><span>{module.title}<small>HSK {module.hskLevel}</small></span></label>)}</div>
-          </section>
           <button className="primary-button" type="submit"><Play size={18} /> Начать тренировку</button>
         </form>
       </div>
@@ -149,8 +136,8 @@ export default function TrainingPage() {
   }
 
   const word = sessionWords[index];
-  const prompt = exercise === 'ru-zh' || exercise === 'measure' ? word.translation : exercise === 'zh-pinyin' || exercise === 'writing' ? word.hanzi : word.pinyin;
-  const task = exercise === 'ru-zh' ? 'Напиши слово иероглифами и пиньинем' : exercise === 'zh-pinyin' ? 'Введи пиньинь с тонами' : exercise === 'pinyin-zh' ? 'Напиши слово иероглифами' : exercise === 'measure' ? 'Введи счётное слово' : 'Напиши иероглиф по чертам';
+  const prompt = exercise === 'zh-pinyin' ? word.hanzi : word.translation;
+  const task = exercise === 'ru-zh' ? 'Напиши слово иероглифами и пиньинем' : exercise === 'zh-pinyin' ? 'Введи пиньинь с тонами' : exercise === 'measure' ? 'Введи счётное слово' : 'Начертай перевод без подсказки контура';
 
   return (
     <div className={styles.session}>
@@ -158,13 +145,13 @@ export default function TrainingPage() {
       <div className={styles.progress}><span style={{ width: `${((index + 1) / sessionWords.length) * 100}%` }} /></div>
       <section className={styles.question}>
         <span className={styles.question__type}>{exerciseLabels.find((item) => item.id === exercise)?.title}</span>
-        <h1 className={exercise !== 'ru-zh' && exercise !== 'measure' ? 'chinese' : ''}>{prompt}</h1>
+        <h1 className={exercise === 'zh-pinyin' ? 'chinese' : ''}>{prompt}</h1>
         <p>{task}</p>
 
         {exercise === 'writing' && !feedback && <WritingExercise key={`${word.id}-${index}`} word={word} onFinish={(correct) => void finishAnswer(correct)} />}
         {exercise !== 'writing' && (
           <div className={styles.answers}>
-            {(exercise === 'ru-zh' || exercise === 'pinyin-zh' || exercise === 'measure') && <input className={exercise !== 'measure' ? 'chinese' : 'chinese'} value={hanziAnswer} onChange={(event) => setHanziAnswer(event.target.value)} placeholder={exercise === 'measure' ? '个, 本, 只…' : 'Иероглифы'} disabled={Boolean(feedback)} autoComplete="off" />}
+            {(exercise === 'ru-zh' || exercise === 'measure') && <input className="chinese" value={hanziAnswer} onChange={(event) => setHanziAnswer(event.target.value)} placeholder={exercise === 'measure' ? '个, 本, 只…' : 'Иероглифы'} disabled={Boolean(feedback)} autoComplete="off" />}
             {(exercise === 'ru-zh' || exercise === 'zh-pinyin') && <input value={pinyinAnswer} onChange={(event) => setPinyinAnswer(event.target.value)} placeholder="ni3 hao3 или nǐ hǎo" disabled={Boolean(feedback)} autoComplete="off" />}
             {!feedback && <button className="primary-button" type="button" onClick={checkAnswer} disabled={exercise === 'ru-zh' ? !hanziAnswer || !pinyinAnswer : exercise === 'zh-pinyin' ? !pinyinAnswer : !hanziAnswer}>Проверить <ArrowRight size={17} /></button>}
           </div>

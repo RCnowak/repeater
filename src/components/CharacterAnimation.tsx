@@ -1,6 +1,7 @@
-import HanziWriter, { type CharacterJson } from 'hanzi-writer';
+import HanziWriter from 'hanzi-writer';
 import { RotateCcw } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { loadHanziCharacter } from '../utils/hanziData';
 import styles from './CharacterAnimation.module.scss';
 
 interface CharacterAnimationProps {
@@ -12,6 +13,14 @@ export default function CharacterAnimation({ hanzi }: CharacterAnimationProps) {
   const writersRef = useRef<HanziWriter[]>([]);
   const [error, setError] = useState(false);
   const characters = Array.from(hanzi);
+  const animationRunRef = useRef(0);
+
+  const playFrom = (index: number, run: number) => {
+    if (run !== animationRunRef.current) return;
+    const writer = writersRef.current[index];
+    if (!writer) return;
+    void writer.animateCharacter({ onComplete: () => playFrom(index + 1, run) });
+  };
 
   useEffect(() => {
     const container = containerRef.current;
@@ -30,17 +39,15 @@ export default function CharacterAnimation({ hanzi }: CharacterAnimationProps) {
         strokeColor: '#353d35',
         outlineColor: '#e4e2d9',
         delayBetweenStrokes: 180,
-        charDataLoader: async (char) => {
-          const response = await fetch(`${import.meta.env.BASE_URL}hanzi/${encodeURIComponent(char)}.json`);
-          if (!response.ok) throw new Error(`Character data not found: ${char}`);
-          return await response.json() as CharacterJson;
-        },
+        charDataLoader: loadHanziCharacter,
         onLoadCharDataError: () => setError(true),
       });
     });
     writersRef.current = writers;
-    writers.forEach((writer) => { void writer.animateCharacter(); });
+    const run = ++animationRunRef.current;
+    playFrom(0, run);
     return () => {
+      animationRunRef.current += 1;
       writers.forEach((writer) => { void writer.pauseAnimation(); });
       writersRef.current = [];
       container.replaceChildren();
@@ -48,7 +55,8 @@ export default function CharacterAnimation({ hanzi }: CharacterAnimationProps) {
   }, [hanzi]);
 
   const replay = () => {
-    writersRef.current.forEach((writer) => { void writer.animateCharacter(); });
+    const run = ++animationRunRef.current;
+    playFrom(0, run);
   };
 
   return (
