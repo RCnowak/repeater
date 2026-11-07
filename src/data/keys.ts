@@ -104,7 +104,7 @@ export const keys: Key[] = [
   { symbol: '兑', pinyin: 'duì', translation: 'обменивать' },
   { symbol: '采', pinyin: 'cǎi', translation: 'собирать' },
   { symbol: '乙', translation: 'II-циклический знак, небесный' },
-//   { symbol: '?', translation: 'человек (лежачий)' },
+  { symbol: '𠂉', translation: 'человек (лежачий)' },
   { symbol: '古', pinyin: 'gǔ', translation: 'древний' },
   { symbol: '⺙', translation: 'бить рукой' },
   { symbol: '与', pinyin: 'yǔ', translation: 'и, с' },
@@ -161,7 +161,8 @@ export const keys: Key[] = [
   { symbol: '台', pinyin: 'tái', translation: 'сцена, платформа' },
 
 // Не получилось использовать в текущей базе слов:
-// 匸, 丬, 罒, 龶, 本, 凵, 京, 丸, 者.
+// 匸, 丬, 罒, 龶, 本, 凵, 京, 丸.
+// Дублей ключей в активном списке нет.
 
 // "食","面","隶 "香","音,"臼","至","肉","聿","羽","缶","石","矛",
 ]

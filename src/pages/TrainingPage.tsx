@@ -1,4 +1,4 @@
-import { ArrowRight, Check, CheckCircle2, Play, RotateCcw, Settings2, X, XCircle } from 'lucide-react';
+import { ArrowRight, Check, CheckCircle2, Lightbulb, Play, RotateCcw, Settings2, X, XCircle } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDictionary } from '../components/DictionaryProvider';
@@ -6,7 +6,7 @@ import WritingExercise from '../components/WritingExercise';
 import { recordReview } from '../db/database';
 import useLocalStorage from '../hooks/useLocalStorage';
 import type { ExerciseType, Settings, Word } from '../types';
-import { hasHanziGap, normalizeHanziAnswer } from '../utils/hanzi';
+import { getHanziCharacters, hasHanziGap, normalizeHanziAnswer } from '../utils/hanzi';
 import { isPinyinCorrect } from '../utils/pinyin';
 import { defaultSettings, sanitizeSettings } from '../utils/settings';
 import styles from './TrainingPage.module.scss';
@@ -40,6 +40,7 @@ export default function TrainingPage() {
   const [feedback, setFeedback] = useState<'correct' | 'wrong' | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
   const [completed, setCompleted] = useState(false);
+  const [associationOpen, setAssociationOpen] = useState(false);
   const dueCount = words.filter((word) => new Date(word.srs.nextReview) <= new Date()).length;
 
   const startSession = (values: Settings) => {
@@ -57,6 +58,7 @@ export default function TrainingPage() {
     setCorrectCount(0);
     setCompleted(false);
     setFeedback(null);
+    setAssociationOpen(false);
     setHanziAnswer('');
     setPinyinAnswer('');
     if (selected.length) setExercise(chooseExercise(selected[0], values.exerciseTypes));
@@ -91,12 +93,14 @@ export default function TrainingPage() {
     setHanziAnswer('');
     setPinyinAnswer('');
     setFeedback(null);
+    setAssociationOpen(false);
   };
 
   const exitSession = () => {
     setSessionWords(null);
     setCompleted(false);
     setFeedback(null);
+    setAssociationOpen(false);
   };
 
   if (!sessionWords) {
@@ -139,6 +143,8 @@ export default function TrainingPage() {
   const word = sessionWords[index];
   const prompt = exercise === 'zh-pinyin' ? word.hanzi : word.translation;
   const task = exercise === 'ru-zh' ? 'Напиши слово иероглифами и пиньинем' : exercise === 'zh-pinyin' ? 'Введи пиньинь с тонами' : exercise === 'measure' ? 'Введи счётное слово' : 'Начертай перевод без подсказки контура';
+  const hasSameTranslation = words.some((candidate) => candidate.id !== word.id && candidate.translation.trim().toLowerCase() === word.translation.trim().toLowerCase());
+  const characterCount = getHanziCharacters(word.hanzi).length;
 
   return (
     <div className={styles.session}>
@@ -147,7 +153,10 @@ export default function TrainingPage() {
       <section className={styles.question}>
         <span className={styles.question__type}>{exerciseLabels.find((item) => item.id === exercise)?.title}</span>
         <h1 className={exercise === 'zh-pinyin' ? 'chinese' : ''}>{prompt}</h1>
+        {hasSameTranslation && <span className={styles.question__length}>Иероглифов: {characterCount}</span>}
         <p>{task}</p>
+
+        {word.associations && <div className={styles.association}><button type="button" onClick={() => setAssociationOpen((open) => !open)} aria-expanded={associationOpen} aria-controls="training-association"><Lightbulb size={15} /> {associationOpen ? 'Скрыть подсказку' : 'Показать ассоциацию'}</button>{associationOpen && <p id="training-association">{word.associations}</p>}</div>}
 
         {exercise === 'writing' && !feedback && <WritingExercise key={`${word.id}-${index}`} word={word} onFinish={(correct) => void finishAnswer(correct)} />}
         {exercise !== 'writing' && (

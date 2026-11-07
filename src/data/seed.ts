@@ -1,5 +1,5 @@
 import type { Module, Tag, WordUserData } from '../types';
-import { examples, words } from './words'
+import { associations, words } from './words'
 
 export const seedModules: Module[] = [];
 
@@ -43,7 +43,7 @@ export { words as seedWords} from './words';
 
 export const seedWordUserData: WordUserData[] = words.map((word) => ({
   wordId: word.id,
-  ...examples[word.id],
+  associations: associations[word.id],
   srs: {
     box: 0,
     lastReview: null,
