@@ -4,6 +4,7 @@ export interface SrsState {
   nextReview: string;
   correctStreak: number;
   wrongCount: number;
+  suspended?: boolean;
 }
 
 export interface BaseWordContent {
@@ -68,7 +69,11 @@ export interface Settings {
   exerciseTypes: ExerciseType[];
   useSrs: boolean;
   moduleIds: string[];
+  tagIds: string[];
   order: TrainingOrder;
+  warmup: boolean;
+  showGrid: boolean;
+  writingMistakeThreshold: number;
 }
 
 export interface ReviewEntry {

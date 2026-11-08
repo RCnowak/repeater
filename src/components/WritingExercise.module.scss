@@ -7,6 +7,10 @@
   &__completed { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 32px; margin-bottom: 8px; color: var(--muted); font-size: 10px; }
   &__completed b { display: grid; min-width: 30px; height: 30px; place-items: center; border-radius: 8px; color: var(--jade); background: var(--jade-soft); font-size: 20px; font-weight: 400; }
   &__target { overflow: hidden; width: 280px; max-width: 100%; margin: 0 auto; border: 1px solid var(--line); border-radius: 20px; background: #fffefa; touch-action: none; }
+  &--grid &__target {
+    background-color: #fffefa;
+    background-image: linear-gradient(to right, transparent calc(50% - 0.5px), #e6e2d7 calc(50% - 0.5px), #e6e2d7 calc(50% + 0.5px), transparent calc(50% + 0.5px)), linear-gradient(to bottom, transparent calc(50% - 0.5px), #e6e2d7 calc(50% - 0.5px), #e6e2d7 calc(50% + 0.5px), transparent calc(50% + 0.5px)), linear-gradient(45deg, transparent calc(50% - 0.5px), #eeeae0 calc(50% - 0.5px), #eeeae0 calc(50% + 0.5px), transparent calc(50% + 0.5px)), linear-gradient(-45deg, transparent calc(50% - 0.5px), #eeeae0 calc(50% - 0.5px), #eeeae0 calc(50% + 0.5px), transparent calc(50% + 0.5px));
+  }
   > p { margin: 11px auto 15px; color: var(--muted); font-size: 10px; line-height: 1.55; }
   &__error { color: var(--accent) !important; }
 }

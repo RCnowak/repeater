@@ -1,9 +1,13 @@
 import { WordContent } from '../types';
-import { associationsHsk1, wordsHsk1 } from './words-hsk1';
+import { associationsHsk2 } from './hsk2/associations';
+import { wordsHsk2 } from './hsk2/words';
+import { wordsHsk1 } from './hsk1/words';
+import { associationsHsk1 } from './hsk1/associations';
 
 const createdAt = (day: number) => new Date(Date.UTC(2026, 0, day)).toISOString();
 
 export const words: WordContent[] = wordsHsk1
+  .concat(wordsHsk2)
   .map((word, index) => ({
     ...word,
     id: word.id || word.hanzi,
@@ -12,5 +16,6 @@ export const words: WordContent[] = wordsHsk1
   }));
 
 export const associations: Record<string, string> = {
-  ...associationsHsk1
+  ...associationsHsk1,
+  ...associationsHsk2
 };

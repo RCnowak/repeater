@@ -74,3 +74,9 @@ export async function recordReview(wordId: string, correct: boolean, exerciseTyp
     });
   });
 }
+
+export async function setWordSuspended(wordId: string, suspended: boolean) {
+  const current = await db.wordData.get(wordId);
+  if (!current) throw new Error(`Word data not found: ${wordId}`);
+  await db.wordData.put({ ...current, srs: { ...current.srs, suspended } });
+}

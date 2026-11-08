@@ -1,13 +1,13 @@
 import { access, mkdir, readFile, writeFile } from 'node:fs/promises';
 
-const sourceFiles = ['seed.ts', 'keys.ts', 'words.ts', 'words-hsk1.ts'];
+const sourceFiles = ['seed.ts', 'keys.ts', 'words.ts', 'hsk1/words.ts', 'hsk2/words.ts'];
 const outputDirectory = new URL('../data/hanzi/', import.meta.url);
 const sources = await Promise.all(sourceFiles.map((file) => readFile(new URL(`../src/data/${file}`, import.meta.url), 'utf8')));
 const source = sources.join('\n');
 const characters = new Set();
 const fallbackCharacters = {
   '⺁': '丿', '⺉': '刂', '⺙': '攵', '⺣': '灬', '⺤': '爪', '⺧': '牛', '⺩': '王',
-  '⺷': '羊', '⺹': '老', '⻂': '衤', '⻐': '钅', '⻠': '饣', '朩': '木', '龵': '手',
+  '⺷': '羊', '⺹': '老', '⻂': '衤', '⻐': '钅', '⻠': '饣', '朩': '木', '龵': '手', '⻊': '足', '龷': '井',
 };
 const addCharacters = (value) => {
   for (const character of value.matchAll(/[⺀-⿿㐀-鿿豈-﫿]/g)) characters.add(character[0]);

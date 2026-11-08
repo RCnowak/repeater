@@ -5,12 +5,17 @@ export const defaultSettings: Settings = {
   exerciseTypes: ['ru-zh', 'zh-pinyin', 'writing', 'measure'],
   useSrs: true,
   moduleIds: [],
+  tagIds: [],
   order: 'created',
+  warmup: true,
+  showGrid: true,
+  writingMistakeThreshold: 2,
 };
 
 export function sanitizeSettings(settings: Settings): Settings {
   const exerciseTypes = settings.exerciseTypes.filter((type) => defaultSettings.exerciseTypes.includes(type));
   return {
+    ...defaultSettings,
     ...settings,
     exerciseTypes: exerciseTypes.length ? exerciseTypes : defaultSettings.exerciseTypes,
   };

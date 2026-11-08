@@ -35,6 +35,8 @@ export const seedTags: Tag[] = [
   { id: 'transport', name: 'Транспорт' },
   { id: 'technology', name: 'Техника' },
   { id: 'clothes', name: 'Одежда' },
+  { id: 'nature', name: 'Природа' },
+  { id: 'disciplines', name: 'Учебные дисциплины' },
 ];
 
 export { keys as seedKeys} from './keys';

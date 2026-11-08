@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import CharacterAnimation from '../components/CharacterAnimation';
 import { useDictionary } from '../components/DictionaryProvider';
 import WordCard from '../components/WordCard';
+import { setWordSuspended } from '../db/database';
 import styles from './WordPage.module.scss';
 
 const splitValues = (value?: string) => value?.split(/[,，]/).map((item) => item.trim()).filter(Boolean) ?? [];
@@ -40,9 +41,11 @@ export default function WordPage() {
           <div><dt>Иероглифы</dt><dd className="chinese">{word.hanzi}</dd></div>
           <div><dt>Пиньинь</dt><dd>{word.pinyin}</dd></div>
           {word.measureWord && <div><dt>Счётное слово</dt><dd className="chinese">{word.measureWord}</dd></div>}
-          <div><dt>Прогресс SRS</dt><dd>Уровень {word.srs.box} · ошибок {word.srs.wrongCount}</dd></div>
+          <div><dt>Прогресс SRS</dt><dd>Уровень {word.srs.box} · ошибок {word.srs.wrongCount}{word.srs.suspended ? ' · исключено из тренировок' : ''}</dd></div>
         </dl>
       </section>
+
+      {word.srs.suspended && <button className={`secondary-button ${styles.train}`} type="button" onClick={() => void setWordSuspended(word.id, false)}>Вернуть в повторения</button>}
 
       <section className={styles.section}>
         <h2>Начертание</h2>
