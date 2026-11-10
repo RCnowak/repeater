@@ -27,7 +27,7 @@ function chooseExercise(word: Word, selected: ExerciseType[]) {
   return available[Math.floor(Math.random() * available.length)] ?? 'zh-pinyin';
 }
 
-function getWarmupKeys(words: Word[], keys: Key[]) {
+function getWarmupKeys(words: Word[], keys: Key[], excludedKeyIds: string[]) {
   const keysById = new Map(keys.map((key) => [key.id, key]));
   const visited = new Set<string>();
   const result: Key[] = [];
@@ -37,7 +37,7 @@ function getWarmupKeys(words: Word[], keys: Key[]) {
     const key = keysById.get(keyId);
     if (!key) return;
     key.childKeyIds.forEach(visit);
-    result.push(key);
+    if (!excludedKeyIds.includes(key.id)) result.push(key);
   };
   words.forEach((word) => word.keyIds.forEach(visit));
   return result;
@@ -47,7 +47,8 @@ export default function TrainingPage() {
   const { words, keys, tags } = useDictionary();
   const [storedSettings, setSettings] = useLocalStorage<Settings>('repeater-settings', defaultSettings);
   const settings = sanitizeSettings(storedSettings);
-  const { register, handleSubmit } = useForm<Settings>({ defaultValues: settings });
+  const { register, handleSubmit, watch } = useForm<Settings>({ defaultValues: settings });
+  const selectedTagCount = watch('tagIds').length;
   const [sessionWords, setSessionWords] = useState<Word[] | null>(null);
   const [index, setIndex] = useState(0);
   const [exercise, setExercise] = useState<ExerciseType>('ru-zh');
@@ -73,7 +74,7 @@ export default function TrainingPage() {
         ? second.srs.wrongCount - first.srs.wrongCount || first.createdAt.localeCompare(second.createdAt)
         : first.createdAt.localeCompare(second.createdAt))
       .slice(0, values.limit);
-    const warmup = values.warmup ? getWarmupKeys(selected, keys) : [];
+    const warmup = values.warmup ? getWarmupKeys(selected, keys, values.excludedKeyIds) : [];
     setSettings(values);
     setSessionWords(selected);
     setWarmupKeys(warmup);
@@ -144,6 +145,12 @@ export default function TrainingPage() {
     setFeedback(null);
   };
 
+  const excludeWarmupKey = () => {
+    const keyId = warmupKeys[warmupIndex].id;
+    setSettings({ ...settings, excludedKeyIds: [...new Set([...settings.excludedKeyIds, keyId])] });
+    nextWarmupKey();
+  };
+
   if (!sessionWords) {
     return (
       <div className="page">
@@ -153,27 +160,27 @@ export default function TrainingPage() {
           <p>Выбери упражнения и темп. Прогресс сохранится на устройстве.</p>
         </div>
         <form onSubmit={handleSubmit(startSession)} className={styles.setup}>
-          <section className={styles.setup__section}>
-            <h2><CheckCircle2 size={17} /> Типы упражнений</h2>
+          <details className={styles.setup__section}>
+            <summary><span className={styles.setup__title}><CheckCircle2 size={17} /> Типы упражнений</span></summary>
             <div className={styles.exerciseOptions}>
               {exerciseLabels.map((item) => <label key={item.id}><input type="checkbox" value={item.id} {...register('exerciseTypes', { validate: (value) => value.length > 0 || 'Выбери хотя бы один тип' })} /><span><strong>{item.title}</strong><small>{item.description}</small></span></label>)}
             </div>
-          </section>
+          </details>
 
-          <section className={styles.setup__section}>
-            <h2><Settings2 size={17} /> Параметры</h2>
+          <details className={styles.setup__section}>
+            <summary><span className={styles.setup__title}><Settings2 size={17} /> Параметры</span></summary>
             <label className={styles.field}>Лимит слов<input type="number" min="1" max="100" {...register('limit', { required: true, valueAsNumber: true, min: 1, max: 100 })} /></label>
             <label className={styles.field}>Порядок слов<select {...register('order')}><option value="created">По дате добавления</option><option value="wrong">Сначала проблемные</option></select></label>
             <label className={styles.field}>Ошибка в начертании после<select {...register('writingMistakeThreshold', { valueAsNumber: true })}><option value="1">1 ошибки</option><option value="2">2 ошибок</option><option value="3">3 ошибок</option></select></label>
             <label className={styles.switch}><span><strong>Учитывать SRS</strong><small>Только слова, которые пора повторить</small></span><input type="checkbox" {...register('useSrs')} /></label>
             <label className={styles.switch}><span><strong>Разминка с ключами</strong><small>Сначала начертать ключи выбранных слов</small></span><input type="checkbox" {...register('warmup')} /></label>
             <label className={styles.switch}><span><strong>Иероглифический квадрат</strong><small>Направляющие в поле начертания</small></span><input type="checkbox" {...register('showGrid')} /></label>
-          </section>
+          </details>
 
-          <section className={styles.setup__section}>
-            <h2>Теги <small>если ничего не выбрано — все</small></h2>
+          <details className={styles.setup__section}>
+            <summary><span className={styles.setup__title}>Теги</span><small>Выбрано: {selectedTagCount}</small></summary>
             <div className={styles.tagOptions}>{tags.map((tag) => <label key={tag.id}><input type="checkbox" value={tag.id} {...register('tagIds')} /><span>{tag.name}</span></label>)}</div>
-          </section>
+          </details>
 
           <button className="primary-button" type="submit"><Play size={18} /> Начать тренировку</button>
         </form>
@@ -200,9 +207,10 @@ export default function TrainingPage() {
           <h1>{key.translation || 'Ключ'}</h1>
           <p>Начертай ключ перед тренировкой слов</p>
           {!feedback && <WritingExercise key={key.id} id={`warmup-${key.id}`} hanzi={key.symbol} showGrid={settings.showGrid} mistakeThreshold={settings.writingMistakeThreshold} onFinish={(correct) => setFeedback(correct ? 'correct' : 'wrong')} />}
-          {!feedback && <div className={styles.sessionActions}><button type="button" onClick={() => setFeedback('wrong')}><HelpCircle size={16} /> Не помню</button></div>}
+          {!feedback && <div className={styles.sessionActions}><button type="button" onClick={() => setFeedback('wrong')}><HelpCircle size={16} /> Не помню</button><button type="button" onClick={excludeWarmupKey}><Ban size={15} /> Не повторять</button></div>}
           {feedback && <div className={`${styles.feedback} ${feedback === 'wrong' ? styles['feedback--wrong'] : ''}`}><span>{feedback === 'correct' ? <Check size={20} /> : <XCircle size={20} />}</span><div><strong>{feedback === 'correct' ? 'Верно!' : 'Нужно ещё повторить'}</strong><p><b className="chinese">{key.symbol}</b>{key.pinyin ? ` · ${key.pinyin}` : ''}</p></div></div>}
           {feedback && <button className="primary-button" type="button" onClick={nextWarmupKey}>{warmupIndex === warmupKeys.length - 1 ? 'К словам' : 'Дальше'} <ArrowRight size={17} /></button>}
+          {feedback && <button className={`secondary-button ${styles.resultExclude}`} type="button" onClick={excludeWarmupKey}><Ban size={15} /> Не повторять</button>}
         </section>
       </div>
     );
@@ -247,6 +255,7 @@ export default function TrainingPage() {
           </div>
         )}
         {feedback && <button className="primary-button" type="button" onClick={nextWord}>{index === sessionWords.length - 1 ? 'Завершить' : 'Дальше'} <ArrowRight size={17} /></button>}
+        {feedback && <button className={`secondary-button ${styles.resultExclude}`} type="button" onClick={() => void suspendCurrentWord()}><Ban size={15} /> Не повторять</button>}
       </section>
     </div>
   );

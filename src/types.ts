@@ -74,6 +74,7 @@ export interface Settings {
   warmup: boolean;
   showGrid: boolean;
   writingMistakeThreshold: number;
+  excludedKeyIds: string[];
 }
 
 export interface ReviewEntry {

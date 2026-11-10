@@ -10,6 +10,7 @@ export const defaultSettings: Settings = {
   warmup: true,
   showGrid: true,
   writingMistakeThreshold: 2,
+  excludedKeyIds: [],
 };
 
 export function sanitizeSettings(settings: Settings): Settings {

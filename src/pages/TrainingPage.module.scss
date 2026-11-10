@@ -1,7 +1,12 @@
 .setup { display: flex; flex-direction: column; gap: 14px; }
 .setup__section { padding: 17px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); }
-.setup__section > h2 { display: flex; align-items: center; gap: 7px; margin-bottom: 13px; font-size: 14px; }
-.setup__section > h2 small { margin-left: auto; color: var(--muted); font-size: 8px; font-weight: 500; }
+.setup__section > summary { display: flex; align-items: center; justify-content: space-between; cursor: pointer; list-style: none; font-size: 14px; font-weight: 700; }
+.setup__section > summary::-webkit-details-marker { display: none; }
+.setup__section > summary::after { width: 7px; height: 7px; margin-left: 12px; border-right: 1.5px solid var(--muted); border-bottom: 1.5px solid var(--muted); content: ''; transform: rotate(45deg); transition: transform 160ms ease; }
+.setup__section[open] > summary::after { transform: rotate(225deg); }
+.setup__section > summary small { margin-left: auto; color: var(--muted); font-size: 9px; font-weight: 500; }
+.setup__title { display: inline-flex; align-items: center; gap: 7px; }
+.setup__section[open] .exerciseOptions, .setup__section[open] .tagOptions { margin-top: 13px; }
 .exerciseOptions { display: flex; flex-direction: column; gap: 8px; }
 .exerciseOptions label { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 12px; background: #f8f7f2; cursor: pointer; }
 .exerciseOptions input, .moduleOptions input { width: 17px; height: 17px; flex: 0 0 auto; accent-color: var(--accent); }
@@ -43,6 +48,7 @@
 .answers input:focus { border-color: #cf9a8d; }
 .sessionActions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 14px; }
 .sessionActions button { display: inline-flex; align-items: center; gap: 5px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; color: var(--muted); background: var(--surface); cursor: pointer; font-size: 10px; }
+.resultExclude { min-height: 42px; margin-top: 8px; font-size: 11px; }
 .feedback { display: flex; align-items: flex-start; gap: 11px; margin: 15px 0 11px; padding: 15px; border-radius: 16px; color: #476451; background: var(--jade-soft); text-align: left; }
 .feedback > span { display: grid; flex: 0 0 31px; height: 31px; place-items: center; border-radius: 50%; background: rgba(255,255,255,0.6); }
 .feedback strong { font-size: 12px; }

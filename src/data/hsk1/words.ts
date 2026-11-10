@@ -16,7 +16,7 @@ export const wordsHsk1: BaseWordContent[] = [
   { hanzi: '吗', pinyin: 'ma', translation: 'вопросительная частица', hskLevel: 1, tags: ['questions', 'word-parts'], keyIds: ['口', '马'] },
   { hanzi: '很', pinyin: 'hěn', translation: 'очень', hskLevel: 1, tags: ['adverbs'], keyIds: ['彳', '艮'] },
   { hanzi: '太', pinyin: 'tài', translation: 'слишком', hskLevel: 1, tags: ['adverbs'], keyIds: ['大'] },
-  { hanzi: '不太', pinyin: 'bùtài', translation: 'не очень', hskLevel: 1, tags: ['adverbs'], keyIds: ['大'] },
+  { hanzi: '不太', pinyin: 'bú tài', translation: 'не очень', hskLevel: 1, tags: ['adverbs'], keyIds: ['大'] },
   { hanzi: '忙', pinyin: 'máng', translation: 'занятой', hskLevel: 1, tags: ['adjectives'], keyIds: ['心', '亡'] },
   { hanzi: '汉', pinyin: 'hàn', translation: 'китайский', hskLevel: 1, tags: ['geography'], keyIds: ['水', '又'] },
   { hanzi: '语', pinyin: 'yǔ', translation: 'язык', hskLevel: 1, tags: ['education', 'geography'], keyIds: ['言', '口', '五'] },
