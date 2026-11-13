@@ -70,6 +70,7 @@ export interface Settings {
   useSrs: boolean;
   moduleIds: string[];
   tagIds: string[];
+  hskLevels: (number | 'none')[];
   order: TrainingOrder;
   warmup: boolean;
   showGrid: boolean;

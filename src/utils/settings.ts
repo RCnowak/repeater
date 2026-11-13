@@ -6,6 +6,7 @@ export const defaultSettings: Settings = {
   useSrs: true,
   moduleIds: [],
   tagIds: [],
+  hskLevels: [],
   order: 'created',
   warmup: true,
   showGrid: true,

@@ -54,6 +54,15 @@ export default function SettingsPage() {
         </section>
 
         <section className={styles.section}>
+          <h2>Уровень HSK по умолчанию</h2>
+          <p className={styles.hint}>Если ничего не выбрано, используются все уровни.</p>
+          <div className={styles.options}>
+            {[1, 2, 3, 4, 5, 6].map((level) => <label key={level}><input type="checkbox" value={level} {...register('hskLevels')} /><span>HSK {level}</span></label>)}
+            <label><input type="checkbox" value="none" {...register('hskLevels')} /><span>Не указано</span></label>
+          </div>
+        </section>
+
+        <section className={styles.section}>
           <h2>Теги по умолчанию</h2>
           <p className={styles.hint}>Если ничего не выбрано, тренируются все теги.</p>
           <div className={styles.options}>

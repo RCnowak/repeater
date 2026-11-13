@@ -1,6 +1,7 @@
 import { ArrowRight, AudioLines, Ban, Check, CheckCircle2, Hash, HelpCircle, Languages, Lightbulb, PenLine, Play, RotateCcw, Settings2, X, XCircle, type LucideIcon } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import CharacterAnimation from '../components/CharacterAnimation';
 import { useDictionary } from '../components/DictionaryProvider';
 import WritingExercise from '../components/WritingExercise';
 import { recordReview, setWordSuspended } from '../db/database';
@@ -49,6 +50,7 @@ export default function TrainingPage() {
   const settings = sanitizeSettings(storedSettings);
   const { register, handleSubmit, watch } = useForm<Settings>({ defaultValues: settings });
   const selectedTagCount = watch('tagIds').length;
+  const selectedHskCount = watch('hskLevels').length;
   const [sessionWords, setSessionWords] = useState<Word[] | null>(null);
   const [index, setIndex] = useState(0);
   const [exercise, setExercise] = useState<ExerciseType>('ru-zh');
@@ -67,6 +69,7 @@ export default function TrainingPage() {
     const now = new Date();
     const selected = words
       .filter((word) => !word.srs.suspended)
+      .filter((word) => !values.hskLevels.length || values.hskLevels.some((level) => level === 'none' ? !word.hskLevel : word.hskLevel === level))
       .filter((word) => !values.tagIds.length || values.tagIds.some((tagId) => word.tags.includes(tagId)))
       .filter((word) => !values.useSrs || new Date(word.srs.nextReview) <= now)
       .filter((word) => availableExercises(word, values.exerciseTypes).length > 0)
@@ -178,6 +181,11 @@ export default function TrainingPage() {
           </details>
 
           <details className={styles.setup__section}>
+            <summary><span className={styles.setup__title}>HSK</span><small>Выбрано: {selectedHskCount}</small></summary>
+            <div className={styles.tagOptions}>{[1, 2, 3, 4, 5, 6].map((level) => <label key={level}><input type="checkbox" value={level} {...register('hskLevels')} /><span>HSK {level}</span></label>)}<label><input type="checkbox" value="none" {...register('hskLevels')} /><span>Не указано</span></label></div>
+          </details>
+
+          <details className={styles.setup__section}>
             <summary><span className={styles.setup__title}>Теги</span><small>Выбрано: {selectedTagCount}</small></summary>
             <div className={styles.tagOptions}>{tags.map((tag) => <label key={tag.id}><input type="checkbox" value={tag.id} {...register('tagIds')} /><span>{tag.name}</span></label>)}</div>
           </details>
@@ -254,6 +262,7 @@ export default function TrainingPage() {
             <div><strong>{feedback === 'correct' ? 'Верно!' : 'Нужно ещё повторить'}</strong><p><b className="chinese">{word.hanzi}</b> · {word.pinyin}<br />{word.translation}{word.measureWord ? ` · 一${word.measureWord}` : ''}</p></div>
           </div>
         )}
+        {feedback && <div className={styles.resultAnimation}><CharacterAnimation key={`${word.id}-${index}-result`} hanzi={word.hanzi} showGrid={settings.showGrid} /></div>}
         {feedback && <button className="primary-button" type="button" onClick={nextWord}>{index === sessionWords.length - 1 ? 'Завершить' : 'Дальше'} <ArrowRight size={17} /></button>}
         {feedback && <button className={`secondary-button ${styles.resultExclude}`} type="button" onClick={() => void suspendCurrentWord()}><Ban size={15} /> Не повторять</button>}
       </section>

@@ -47,7 +47,7 @@ Hash-based routes:
 - `#/keys` and `#/keys/:keyId` — keys, optional alternative `variants`, nested keys, related words, animations for every form.
 - `#/training` — four exercise types with icons, optional tag/SRS filters, warm-up keys ordered recursively before words, hidden associations, forget/exclude actions, and completion state. Blind writing shows completed characters, an optional grid, and a configurable mistake threshold. Phrase gaps such as `听...说` ignore dots in answers and are excluded from writing/animation sequences.
 - `#/stats` — last 7 days, words with errors, consecutive training-day streak, recent answers.
-- `#/settings` — persisted default limit, exercise types, tags, SRS mode, order, warm-up, grid, and writing mistake threshold. Training is the centered third of five bottom-navigation items. Suspended words can be restored from their detail page.
+- `#/settings` — persisted default limit, exercise types, HSK levels (including unspecified), tags, SRS mode, order, warm-up, grid, and writing mistake threshold. Training is the centered third of five bottom-navigation items. Suspended words can be restored from their detail page. Results include an animated stroke-order grid.
 
 Pinyin utilities are in `src/utils/pinyin.ts`. Preserve support for diacritics, numbered tones, toneless search, and `v`/`u:` for `ü`.
 

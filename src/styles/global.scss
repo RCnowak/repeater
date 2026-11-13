@@ -6,8 +6,26 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Repeater Chinese Extra';
+  src: url('../assets/fonts/babelstone-han-extra-200000.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+200D3;
+}
+
+@font-face {
+  font-family: 'Repeater Chinese Extra';
+  src: url('../assets/fonts/babelstone-han-extra-220000.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+22016;
+}
+
 :root {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Repeater Chinese', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Repeater Chinese', 'Repeater Chinese Extra', sans-serif;
   color: #292b27;
   background: #e9e8e1;
   font-synthesis: none;
@@ -23,7 +41,7 @@
   --jade: #5f7f6c;
   --jade-soft: #e5eee6;
   --gold-soft: #f3ecd9;
-  --chinese-font: 'Repeater Chinese', 'Noto Sans CJK SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --chinese-font: 'Repeater Chinese', 'Repeater Chinese Extra', 'Noto Sans CJK SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
 }
 
 * { box-sizing: border-box; }

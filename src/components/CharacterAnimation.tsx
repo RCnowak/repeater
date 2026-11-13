@@ -7,9 +7,10 @@ import styles from './CharacterAnimation.module.scss';
 
 interface CharacterAnimationProps {
   hanzi: string;
+  showGrid?: boolean;
 }
 
-export default function CharacterAnimation({ hanzi }: CharacterAnimationProps) {
+export default function CharacterAnimation({ hanzi, showGrid = false }: CharacterAnimationProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const writersRef = useRef<HanziWriter[]>([]);
   const [error, setError] = useState(false);
@@ -61,7 +62,7 @@ export default function CharacterAnimation({ hanzi }: CharacterAnimationProps) {
   };
 
   return (
-    <div className={styles.animation}>
+    <div className={`${styles.animation} ${showGrid ? styles['animation--grid'] : ''}`}>
       <div ref={containerRef} className={styles.animation__characters} aria-label={`Порядок черт: ${hanzi}`} />
       {error && <p className={styles.animation__error}>Для части иероглифов нет локальных данных начертания.</p>}
       <button className={`secondary-button ${styles.animation__replay}`} type="button" onClick={replay}><RotateCcw size={15} /> Повторить анимацию</button>

@@ -49,6 +49,7 @@
 .sessionActions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 14px; }
 .sessionActions button { display: inline-flex; align-items: center; gap: 5px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; color: var(--muted); background: var(--surface); cursor: pointer; font-size: 10px; }
 .resultExclude { min-height: 42px; margin-top: 8px; font-size: 11px; }
+.resultAnimation { margin: 14px 0; }
 .feedback { display: flex; align-items: flex-start; gap: 11px; margin: 15px 0 11px; padding: 15px; border-radius: 16px; color: #476451; background: var(--jade-soft); text-align: left; }
 .feedback > span { display: grid; flex: 0 0 31px; height: 31px; place-items: center; border-radius: 50%; background: rgba(255,255,255,0.6); }
 .feedback strong { font-size: 12px; }
