@@ -8,7 +8,7 @@ const characters = new Set();
 const fallbackCharacters = {
   '⺁': '丿', '⺉': '刂', '⺙': '攵', '⺣': '灬', '⺤': '爪', '⺧': '牛', '⺩': '王',
   '⺷': '羊', '⺹': '老', '⻂': '衤', '⻐': '钅', '⻠': '饣', '朩': '木', '龵': '手', '⻊': '足', '龷': '井',
-  '𠂉': '人', '𠃓': '虫', '𢀖': '人',
+  '𠂉': '人', '𠃓': '虫', '𢀖': '人', '𡨄': '宀', '𡗗': '春', '𫠣': '东', '⺛': '无', '㐫': '凶',
 };
 const addCharacters = (value) => {
   for (const character of value.matchAll(/[⺀-⿿㐀-鿿豈-﫿𠀀-𪛟]/gu)) characters.add(character[0]);

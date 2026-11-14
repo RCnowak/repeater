@@ -28,6 +28,11 @@ function chooseExercise(word: Word, selected: ExerciseType[]) {
   return available[Math.floor(Math.random() * available.length)] ?? 'zh-pinyin';
 }
 
+const unsupportedWarmupKeys = new Set([
+  '⺁', '⺉', '⺙', '⺣', '⺤', '⺧', '⺩', '⺷', '⺹', '⻂', '⻐', '⻠', '朩', '龵', '⻊', '龷',
+  '𠂉', '𠃓', '𢀖', '𡨄', '𡗗', '𫠣', '⺛', '㐫',
+]);
+
 function getWarmupKeys(words: Word[], keys: Key[], excludedKeyIds: string[]) {
   const keysById = new Map(keys.map((key) => [key.id, key]));
   const visited = new Set<string>();
@@ -38,7 +43,7 @@ function getWarmupKeys(words: Word[], keys: Key[], excludedKeyIds: string[]) {
     const key = keysById.get(keyId);
     if (!key) return;
     key.childKeyIds.forEach(visit);
-    if (!excludedKeyIds.includes(key.id)) result.push(key);
+    if (!excludedKeyIds.includes(key.id) && !unsupportedWarmupKeys.has(key.id)) result.push(key);
   };
   words.forEach((word) => word.keyIds.forEach(visit));
   return result;
