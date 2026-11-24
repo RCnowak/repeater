@@ -290,6 +290,14 @@ export const keys: Key[] = [
   { symbol: '邦', pinyin: 'bāng', translation: 'государство' },
   { symbol: '尧', pinyin: 'yáo', translation: 'высокое место' },
   { symbol: '成', pinyin: 'chéng', translation: 'успех' },
+  { symbol: '车', pinyin: 'chē', translation: 'телега, транспорт' },
+  { symbol: '工', pinyin: 'gōng', translation: 'работа, ремесло' },
+  { symbol: '方', pinyin: 'fāng', translation: 'сторона, квадрат' },
+  { symbol: '攵', pinyin: 'pū', translation: 'бить рукой' },
+  { symbol: '才', pinyin: 'cái', translation: 'способность, талант' },
+  { symbol: '久', pinyin: 'jiǔ', translation: 'долго, давно' },
+  { symbol: '皮', pinyin: 'pí', translation: 'кожа, кожура' },
+  { symbol: '革', pinyin: 'gé', translation: 'выделанная кожа' },
 // "食","面","隶 "香","音,"肉//,疒
 ]
   .map((value, index) => ({

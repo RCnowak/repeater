@@ -26,6 +26,7 @@ export const seedTags: Tag[] = [
   { id: 'family', name: 'Семья' },
   { id: 'questions', name: 'Вопросы' },
   { id: 'communication', name: 'Общение' },
+  { id: 'abstract', name: 'Абстрактные понятия' },
   { id: 'work', name: 'Работа и профессии' },
   { id: 'shopping', name: 'Покупки и деньги' },
   { id: 'names', name: 'Имена' },

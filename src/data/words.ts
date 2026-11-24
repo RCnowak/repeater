@@ -3,11 +3,14 @@ import { associationsHsk2 } from './hsk2/associations';
 import { wordsHsk2 } from './hsk2/words';
 import { wordsHsk1 } from './hsk1/words';
 import { associationsHsk1 } from './hsk1/associations';
+import { wordsHsk3 } from './hsk3/words';
+import { associationsHsk3 } from './hsk3/associations';
 
 const createdAt = (day: number) => new Date(Date.UTC(2026, 0, day)).toISOString();
 
 export const words: WordContent[] = wordsHsk1
   .concat(wordsHsk2)
+  .concat(wordsHsk3)
   .map((word, index) => ({
     ...word,
     id: word.id || word.hanzi,
@@ -17,5 +20,6 @@ export const words: WordContent[] = wordsHsk1
 
 export const associations: Record<string, string> = {
   ...associationsHsk1,
-  ...associationsHsk2
+  ...associationsHsk2,
+  ...associationsHsk3
 };

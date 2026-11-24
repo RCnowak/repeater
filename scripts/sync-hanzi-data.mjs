@@ -1,6 +1,6 @@
 import { access, mkdir, readFile, writeFile } from 'node:fs/promises';
 
-const sourceFiles = ['seed.ts', 'keys.ts', 'words.ts', 'hsk1/words.ts', 'hsk2/words.ts'];
+const sourceFiles = ['seed.ts', 'keys.ts', 'words.ts', 'hsk1/words.ts', 'hsk2/words.ts', 'hsk3/words.ts'];
 const outputDirectory = new URL('../data/hanzi/', import.meta.url);
 const sources = await Promise.all(sourceFiles.map((file) => readFile(new URL(`../src/data/${file}`, import.meta.url), 'utf8')));
 const source = sources.join('\n');
